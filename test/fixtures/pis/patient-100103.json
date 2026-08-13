@@ -1,0 +1,15 @@
+{
+  "patientId": "100103",
+  "name": "King Jr, Robert",
+  "dob": "01/09/1982",
+  "gender": "M",
+  "ssn": "456-78-9012",
+  "phone": "615-555-0110",
+  "email": "rkingjr@example.com",
+  "address": {
+    "line1": "55 Music Row",
+    "city": "Nashville",
+    "state": "TN",
+    "zip": "37203"
+  }
+}

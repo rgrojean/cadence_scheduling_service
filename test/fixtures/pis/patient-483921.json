@@ -1,0 +1,15 @@
+{
+  "patientId": "483921",
+  "name": "Garcia, Maria",
+  "dob": "03/15/1961",
+  "gender": "F",
+  "ssn": "123-45-6789",
+  "phone": "615-555-0142",
+  "email": "mgarcia@example.com",
+  "address": {
+    "line1": "412 Oak Street",
+    "city": "Nashville",
+    "state": "TN",
+    "zip": "37211"
+  }
+}

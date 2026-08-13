@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: Patient Identity Service (PIS) v2
+  version: "2.0.0"
+servers:
+  - url: "{baseUrl}"
+    variables:
+      baseUrl:
+        default: http://localhost:4110
+paths:
+  /v2/patients/{patientId}:
+    get:
+      operationId: getPatient
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient demographics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientV2"
+  /v2/patients:
+    get:
+      operationId: searchPatients
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient typeahead results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientSearchResponse"
+components:
+  schemas:
+    AddressV2:
+      type: object
+      required: [line1, city, state, zip]
+      properties:
+        line1:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    PatientV2:
+      type: object
+      required: [patientId, name, dob, gender, ssn, phone, email, address]
+      properties:
+        patientId:
+          type: string
+        name:
+          type: string
+          description: Display name, e.g. "Garcia, Maria"
+        dob:
+          type: string
+          description: MM/DD/YYYY
+        gender:
+          type: string
+        ssn:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          nullable: true
+        address:
+          $ref: "#/components/schemas/AddressV2"
+    PatientSearchResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PatientV2"
+        meta:
+          type: object
+          required: [total, page, nextPage]
+          properties:
+            total:
+              type: integer
+            page:
+              type: integer
+            nextPage:
+              type: integer
+              nullable: true

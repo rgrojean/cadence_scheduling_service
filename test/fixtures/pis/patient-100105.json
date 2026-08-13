@@ -1,0 +1,15 @@
+{
+  "patientId": "100105",
+  "name": "Thompson, Earl",
+  "dob": "06/06/1952",
+  "gender": "M",
+  "ssn": "111-22-3333",
+  "phone": "615-555-0201",
+  "email": "ethompson@example.com",
+  "address": {
+    "line1": "301 Gallatin Pike",
+    "city": "Nashville",
+    "state": "TN",
+    "zip": "37206"
+  }
+}

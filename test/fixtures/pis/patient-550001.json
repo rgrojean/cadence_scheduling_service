@@ -1,0 +1,15 @@
+{
+  "patientId": "550001",
+  "name": "Nguyen, Anh",
+  "dob": "12/01/1973",
+  "gender": "F",
+  "ssn": "789-01-2345",
+  "phone": "615-555-0133",
+  "email": "anguyen@example.com",
+  "address": {
+    "line1": "210 Charlotte Ave",
+    "city": "Nashville",
+    "state": "TN",
+    "zip": "37201"
+  }
+}

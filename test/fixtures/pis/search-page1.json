@@ -1,0 +1,159 @@
+{
+  "data": [
+    {
+      "patientId": "483921",
+      "name": "Garcia, Maria",
+      "dob": "03/15/1961",
+      "gender": "F",
+      "ssn": "123-45-6789",
+      "phone": "615-555-0142",
+      "email": "mgarcia@example.com",
+      "address": {
+        "line1": "412 Oak Street",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37211"
+      }
+    },
+    {
+      "patientId": "100101",
+      "name": "Garcia Lopez, Maria del Carmen",
+      "dob": "07/22/1978",
+      "gender": "F",
+      "ssn": "234-56-7890",
+      "phone": "615-555-0188",
+      "email": "mdc.garcia@example.com",
+      "address": {
+        "line1": "88 Belmont Ave",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37212"
+      }
+    },
+    {
+      "patientId": "100102",
+      "name": "Van Der Berg, Jan",
+      "dob": "11/03/1955",
+      "gender": "M",
+      "ssn": "345-67-8901",
+      "phone": "615-555-0199",
+      "email": null,
+      "address": {
+        "line1": "1201 West End Blvd",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37203"
+      }
+    },
+    {
+      "patientId": "100103",
+      "name": "King Jr, Robert",
+      "dob": "01/09/1982",
+      "gender": "M",
+      "ssn": "456-78-9012",
+      "phone": "615-555-0110",
+      "email": "rkingjr@example.com",
+      "address": {
+        "line1": "55 Music Row",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37203"
+      }
+    },
+    {
+      "patientId": "100104",
+      "name": "Williams, Sarah",
+      "dob": "05/14/1990",
+      "gender": "F",
+      "ssn": "567-89-0123",
+      "phone": "615-555-0121",
+      "email": "swilliams.rvb@example.com",
+      "address": {
+        "line1": "900 Demonbreun St",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37203"
+      }
+    },
+    {
+      "patientId": "550001",
+      "name": "Nguyen, Anh",
+      "dob": "12/01/1973",
+      "gender": "F",
+      "ssn": "789-01-2345",
+      "phone": "615-555-0133",
+      "email": "anguyen@example.com",
+      "address": {
+        "line1": "210 Charlotte Ave",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37201"
+      }
+    },
+    {
+      "patientId": "550002",
+      "name": "Brooks, Helen",
+      "dob": "08/30/1949",
+      "gender": "F",
+      "ssn": "901-23-4567",
+      "phone": "615-555-0155",
+      "email": null,
+      "address": {
+        "line1": "77 Hillsboro Pike",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37215"
+      }
+    },
+    {
+      "patientId": "100105",
+      "name": "Thompson, Earl",
+      "dob": "06/06/1952",
+      "gender": "M",
+      "ssn": "111-22-3333",
+      "phone": "615-555-0201",
+      "email": "ethompson@example.com",
+      "address": {
+        "line1": "301 Gallatin Pike",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37206"
+      }
+    },
+    {
+      "patientId": "100106",
+      "name": "Chen, Wei",
+      "dob": "10/19/1985",
+      "gender": "M",
+      "ssn": "222-33-4444",
+      "phone": "615-555-0202",
+      "email": "wchen@example.com",
+      "address": {
+        "line1": "1500 Church St",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37203"
+      }
+    },
+    {
+      "patientId": "100107",
+      "name": "Johnson, Patricia",
+      "dob": "03/03/1964",
+      "gender": "F",
+      "ssn": "333-44-5555",
+      "phone": "615-555-0203",
+      "email": "pjohnson@example.com",
+      "address": {
+        "line1": "44 Nolensville Pike",
+        "city": "Nashville",
+        "state": "TN",
+        "zip": "37211"
+      }
+    }
+  ],
+  "meta": {
+    "total": 28,
+    "page": 1,
+    "nextPage": 2
+  }
+}

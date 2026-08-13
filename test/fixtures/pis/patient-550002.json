@@ -1,0 +1,15 @@
+{
+  "patientId": "550002",
+  "name": "Brooks, Helen",
+  "dob": "08/30/1949",
+  "gender": "F",
+  "ssn": "901-23-4567",
+  "phone": "615-555-0155",
+  "email": null,
+  "address": {
+    "line1": "77 Hillsboro Pike",
+    "city": "Nashville",
+    "state": "TN",
+    "zip": "37215"
+  }
+}
