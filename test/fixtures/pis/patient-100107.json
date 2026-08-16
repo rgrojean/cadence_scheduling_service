@@ -1,9 +1,16 @@
 {
-  "patientId": "100107",
-  "name": "Johnson, Patricia",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "100107"
+    }
+  ],
+  "given": [
+    "Patricia"
+  ],
+  "family": "Johnson",
   "dob": "03/03/1964",
   "gender": "F",
-  "ssn": "333-44-5555",
   "phone": "615-555-0203",
   "email": "pjohnson@example.com",
   "address": {

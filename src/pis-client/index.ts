@@ -1,4 +1,4 @@
-/** Generated-style types mirroring openapi.yaml (PIS v2). */
+/** Generated-style types mirroring openapi.yaml (PIS v3). */
 export interface AddressV2 {
   line1: string;
   city: string;
@@ -6,28 +6,33 @@ export interface AddressV2 {
   zip: string;
 }
 
-export interface PatientV2 {
-  patientId: string;
-  name: string;
+export interface Identifier {
+  system: string;
+  value: string;
+}
+
+export interface Patient {
+  identifier: Identifier[];
+  given: string[];
+  family: string;
   dob: string;
   gender: string;
-  ssn: string;
   phone: string;
   email: string | null;
   address: AddressV2;
 }
 
 export interface PatientSearchResponse {
-  data: PatientV2[];
+  data: Patient[];
   meta: { total: number; page: number; nextPage: number | null };
 }
 
 export interface PisApi {
-  getPatient(patientId: string): Promise<PatientV2>;
+  getPatient(patientId: string): Promise<Patient>;
   searchPatients(q: string): Promise<PatientSearchResponse>;
 }
 
-/** Raw PIS v2 HTTP client (openapi-generator style). */
+/** Raw PIS v3 HTTP client (openapi-generator style). */
 export function createPisRawClient(baseUrl: string): PisApi {
   async function get<T>(path: string): Promise<T> {
     const res = await fetch(`${baseUrl}${path}`);

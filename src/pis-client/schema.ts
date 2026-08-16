@@ -9,24 +9,31 @@ export const AddressV2 = z
   })
   .strict();
 
-export const PatientV2 = z
+export const Identifier = z
   .object({
-    patientId: z.string(),
-    name: z.string(), // "Garcia, Maria"
+    system: z.string(),
+    value: z.string(),
+  })
+  .strict();
+
+export const Patient = z
+  .object({
+    identifier: z.array(Identifier).min(1),
+    given: z.array(z.string()).min(1),
+    family: z.string(),
     dob: z.string(), // "MM/DD/YYYY"
     gender: z.string(),
-    ssn: z.string(), // present per v2 spec; not used by Cadence
     phone: z.string(),
     email: z.string().nullable(),
     address: AddressV2,
   })
   .strict();
 
-export type PatientV2 = z.infer<typeof PatientV2>;
+export type Patient = z.infer<typeof Patient>;
 
 export const PatientSearchResponse = z
   .object({
-    data: z.array(PatientV2),
+    data: z.array(Patient),
     meta: z
       .object({
         total: z.number(),

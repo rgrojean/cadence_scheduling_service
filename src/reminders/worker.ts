@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { fileURLToPath } from "node:url";
 import { pool } from "../db.js";
-import { getPatient } from "../identity.js";
+import { displayName, getPatient } from "../identity.js";
 
 /**
  * Reminder worker — runs every 15 minutes in production (cron).
@@ -27,7 +27,7 @@ export async function runReminders(log: (msg: string) => void = console.log): Pr
   for (const appt of appointments) {
     try {
       const patient = await getPatient(appt.patient_id);
-      const message = `Riverbend Health reminder: appointment for ${patient.name} on ${new Date(appt.starts_at).toISOString()}. Reply HELP for help.`;
+      const message = `Riverbend Health reminder: appointment for ${displayName(patient)} on ${new Date(appt.starts_at).toISOString()}. Reply HELP for help.`;
       // Stub messaging gateway — write intended message to stdout/log (no real SMS)
       const gateway = process.env.MESSAGING_GATEWAY_URL ?? "http://localhost:5100";
       log(`[SMS → ${patient.phone}] via ${gateway}: ${message}`);
