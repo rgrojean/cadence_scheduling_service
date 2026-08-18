@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { bookSlot, cancelAppointment, pool, searchSlots } from "../db.js";
-import { getPatient, searchPatients } from "../identity.js";
+import { displayName, getPatient, riverbendPatientId, searchPatients } from "../identity.js";
 
 export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.get("/slots", async (req) => {
@@ -29,14 +29,22 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     if (appt.rowCount === 0) return { error: "not_found" };
     const patient = await getPatient(appt.rows[0].patient_id);
     return {
-      patientId: patient.patientId,
-      name: patient.name,
+      patientId: riverbendPatientId(patient),
+      name: displayName(patient),
       dob: patient.dob,
     };
   });
 
   app.get("/patients", async (req) => {
     const { q } = req.query as { q: string };
-    return searchPatients(q);
+    const result = await searchPatients(q);
+    return {
+      data: result.data.map((patient) => ({
+        ...patient,
+        patientId: riverbendPatientId(patient),
+        name: displayName(patient),
+      })),
+      meta: result.meta,
+    };
   });
 }

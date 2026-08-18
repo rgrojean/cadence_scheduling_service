@@ -3,6 +3,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { migrate, pool } from "../src/db.js";
+import { displayName } from "../src/identity.js";
+import { PatientV2 } from "../src/pis-client/schema.js";
 import { runReminders } from "../src/reminders/worker.js";
 
 const fixture = JSON.parse(
@@ -58,6 +60,11 @@ describe("reminder worker", () => {
     expect(lines[0]).toContain("615-555-0142");
     expect(lines[0]).toContain("Garcia, Maria");
     expect(lines[0]).toMatch(/^\[SMS →/);
+  });
+
+  it("composes reminder SMS display name from given[] and family", () => {
+    const patient = PatientV2.parse(fixture);
+    expect(displayName(patient)).toBe("Garcia, Maria");
   });
 
   it("fails closed when PIS is unavailable", async () => {
