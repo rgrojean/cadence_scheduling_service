@@ -1,9 +1,16 @@
 {
-  "patientId": "483921",
-  "name": "Garcia, Maria",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "483921"
+    }
+  ],
+  "given": [
+    "Maria"
+  ],
+  "family": "Garcia",
   "dob": "03/15/1961",
   "gender": "F",
-  "ssn": "123-45-6789",
   "phone": "615-555-0142",
   "email": "mgarcia@example.com",
   "address": {

@@ -1,11 +1,18 @@
 {
   "data": [
     {
-      "patientId": "483921",
-      "name": "Garcia, Maria",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "483921"
+        }
+      ],
+      "given": [
+        "Maria"
+      ],
+      "family": "Garcia",
       "dob": "03/15/1961",
       "gender": "F",
-      "ssn": "123-45-6789",
       "phone": "615-555-0142",
       "email": "mgarcia@example.com",
       "address": {
@@ -16,11 +23,20 @@
       }
     },
     {
-      "patientId": "100101",
-      "name": "Garcia Lopez, Maria del Carmen",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100101"
+        }
+      ],
+      "given": [
+        "Maria",
+        "del",
+        "Carmen"
+      ],
+      "family": "Garcia Lopez",
       "dob": "07/22/1978",
       "gender": "F",
-      "ssn": "234-56-7890",
       "phone": "615-555-0188",
       "email": "mdc.garcia@example.com",
       "address": {
@@ -31,11 +47,18 @@
       }
     },
     {
-      "patientId": "100102",
-      "name": "Van Der Berg, Jan",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100102"
+        }
+      ],
+      "given": [
+        "Jan"
+      ],
+      "family": "Van Der Berg",
       "dob": "11/03/1955",
       "gender": "M",
-      "ssn": "345-67-8901",
       "phone": "615-555-0199",
       "email": null,
       "address": {
@@ -46,11 +69,18 @@
       }
     },
     {
-      "patientId": "100103",
-      "name": "King Jr, Robert",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100103"
+        }
+      ],
+      "given": [
+        "Robert"
+      ],
+      "family": "King Jr",
       "dob": "01/09/1982",
       "gender": "M",
-      "ssn": "456-78-9012",
       "phone": "615-555-0110",
       "email": "rkingjr@example.com",
       "address": {
@@ -61,11 +91,18 @@
       }
     },
     {
-      "patientId": "100104",
-      "name": "Williams, Sarah",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100104"
+        }
+      ],
+      "given": [
+        "Sarah"
+      ],
+      "family": "Williams",
       "dob": "05/14/1990",
       "gender": "F",
-      "ssn": "567-89-0123",
       "phone": "615-555-0121",
       "email": "swilliams.rvb@example.com",
       "address": {
@@ -76,11 +113,18 @@
       }
     },
     {
-      "patientId": "550001",
-      "name": "Nguyen, Anh",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "550001"
+        }
+      ],
+      "given": [
+        "Anh"
+      ],
+      "family": "Nguyen",
       "dob": "12/01/1973",
       "gender": "F",
-      "ssn": "789-01-2345",
       "phone": "615-555-0133",
       "email": "anguyen@example.com",
       "address": {
@@ -91,11 +135,18 @@
       }
     },
     {
-      "patientId": "550002",
-      "name": "Brooks, Helen",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "550002"
+        }
+      ],
+      "given": [
+        "Helen"
+      ],
+      "family": "Brooks",
       "dob": "08/30/1949",
       "gender": "F",
-      "ssn": "901-23-4567",
       "phone": "615-555-0155",
       "email": null,
       "address": {
@@ -106,11 +157,18 @@
       }
     },
     {
-      "patientId": "100105",
-      "name": "Thompson, Earl",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100105"
+        }
+      ],
+      "given": [
+        "Earl"
+      ],
+      "family": "Thompson",
       "dob": "06/06/1952",
       "gender": "M",
-      "ssn": "111-22-3333",
       "phone": "615-555-0201",
       "email": "ethompson@example.com",
       "address": {
@@ -121,11 +179,18 @@
       }
     },
     {
-      "patientId": "100106",
-      "name": "Chen, Wei",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100106"
+        }
+      ],
+      "given": [
+        "Wei"
+      ],
+      "family": "Chen",
       "dob": "10/19/1985",
       "gender": "M",
-      "ssn": "222-33-4444",
       "phone": "615-555-0202",
       "email": "wchen@example.com",
       "address": {
@@ -136,11 +201,18 @@
       }
     },
     {
-      "patientId": "100107",
-      "name": "Johnson, Patricia",
+      "identifier": [
+        {
+          "system": "urn:riverbend:mrn",
+          "value": "100107"
+        }
+      ],
+      "given": [
+        "Patricia"
+      ],
+      "family": "Johnson",
       "dob": "03/03/1964",
       "gender": "F",
-      "ssn": "333-44-5555",
       "phone": "615-555-0203",
       "email": "pjohnson@example.com",
       "address": {

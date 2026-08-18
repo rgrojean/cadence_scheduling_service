@@ -1,4 +1,4 @@
-/** Generated-style types mirroring openapi.yaml (PIS v2). */
+/** Generated-style types mirroring openapi.yaml (PIS v3 identity surfaces). */
 export interface AddressV2 {
   line1: string;
   city: string;
@@ -6,12 +6,17 @@ export interface AddressV2 {
   zip: string;
 }
 
+export interface IdentifierV2 {
+  system: string;
+  value: string;
+}
+
 export interface PatientV2 {
-  patientId: string;
-  name: string;
+  identifier: IdentifierV2[];
+  given: string[];
+  family: string;
   dob: string;
   gender: string;
-  ssn: string;
   phone: string;
   email: string | null;
   address: AddressV2;
