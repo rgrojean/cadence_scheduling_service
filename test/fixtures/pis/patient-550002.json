@@ -1,9 +1,16 @@
 {
-  "patientId": "550002",
-  "name": "Brooks, Helen",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "550002"
+    }
+  ],
+  "given": [
+    "Helen"
+  ],
+  "family": "Brooks",
   "dob": "08/30/1949",
   "gender": "F",
-  "ssn": "901-23-4567",
   "phone": "615-555-0155",
   "email": null,
   "address": {

@@ -1,9 +1,18 @@
 {
-  "patientId": "100101",
-  "name": "Garcia Lopez, Maria del Carmen",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "100101"
+    }
+  ],
+  "given": [
+    "Maria",
+    "del",
+    "Carmen"
+  ],
+  "family": "Garcia Lopez",
   "dob": "07/22/1978",
   "gender": "F",
-  "ssn": "234-56-7890",
   "phone": "615-555-0188",
   "email": "mdc.garcia@example.com",
   "address": {

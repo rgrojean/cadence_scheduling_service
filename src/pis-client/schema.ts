@@ -9,13 +9,20 @@ export const AddressV2 = z
   })
   .strict();
 
+export const IdentifierV2 = z
+  .object({
+    system: z.string(),
+    value: z.string(),
+  })
+  .strict();
+
 export const PatientV2 = z
   .object({
-    patientId: z.string(),
-    name: z.string(), // "Garcia, Maria"
+    identifier: z.array(IdentifierV2).min(1),
+    given: z.array(z.string()).min(1),
+    family: z.string(),
     dob: z.string(), // "MM/DD/YYYY"
     gender: z.string(),
-    ssn: z.string(), // present per v2 spec; not used by Cadence
     phone: z.string(),
     email: z.string().nullable(),
     address: AddressV2,
