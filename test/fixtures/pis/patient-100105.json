@@ -1,9 +1,14 @@
 {
-  "patientId": "100105",
-  "name": "Thompson, Earl",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "100105"
+    }
+  ],
+  "given": ["Earl"],
+  "family": "Thompson",
   "dob": "06/06/1952",
   "gender": "M",
-  "ssn": "111-22-3333",
   "phone": "615-555-0201",
   "email": "ethompson@example.com",
   "address": {

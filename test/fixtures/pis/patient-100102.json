@@ -1,9 +1,14 @@
 {
-  "patientId": "100102",
-  "name": "Van Der Berg, Jan",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "100102"
+    }
+  ],
+  "given": ["Jan"],
+  "family": "Van Der Berg",
   "dob": "11/03/1955",
   "gender": "M",
-  "ssn": "345-67-8901",
   "phone": "615-555-0199",
   "email": null,
   "address": {

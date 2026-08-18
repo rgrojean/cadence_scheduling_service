@@ -1,9 +1,14 @@
 {
-  "patientId": "100106",
-  "name": "Chen, Wei",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "100106"
+    }
+  ],
+  "given": ["Wei"],
+  "family": "Chen",
   "dob": "10/19/1985",
   "gender": "M",
-  "ssn": "222-33-4444",
   "phone": "615-555-0202",
   "email": "wchen@example.com",
   "address": {

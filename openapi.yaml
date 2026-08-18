@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Patient Identity Service (PIS) v2
-  version: "2.0.0"
+  title: Patient Identity Service (PIS) v3
+  version: "3.0.0"
 servers:
   - url: "{baseUrl}"
     variables:
@@ -17,6 +17,7 @@ paths:
           required: true
           schema:
             type: string
+          description: Lookup key — the value of the Riverbend-namespaced identifier.
       responses:
         "200":
           description: Patient demographics
@@ -54,21 +55,37 @@ components:
           type: string
         zip:
           type: string
+    Identifier:
+      type: object
+      required: [system, value]
+      properties:
+        system:
+          type: string
+          description: Namespace URI (e.g. urn:riverbend:mrn, urn:stansgar:mrn).
+        value:
+          type: string
     PatientV2:
       type: object
-      required: [patientId, name, dob, gender, ssn, phone, email, address]
+      required: [identifier, given, family, dob, gender, phone, email, address]
       properties:
-        patientId:
+        identifier:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/Identifier"
+        given:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: Given name parts, ordered (FHIR HumanName.given).
+        family:
           type: string
-        name:
-          type: string
-          description: Display name, e.g. "Garcia, Maria"
+          description: Family name (FHIR HumanName.family).
         dob:
           type: string
           description: MM/DD/YYYY
         gender:
-          type: string
-        ssn:
           type: string
         phone:
           type: string

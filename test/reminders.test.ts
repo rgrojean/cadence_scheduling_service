@@ -60,6 +60,23 @@ describe("reminder worker", () => {
     expect(lines[0]).toMatch(/^\[SMS →/);
   });
 
+  it("skips/flags a patient whose identifier[] contains only urn:stansgar:mrn (no urn:riverbend:mrn)", async () => {
+    await pool.query(`DELETE FROM reminder_log WHERE appointment_id = $1`, [apptId]);
+    const stansgarOnly = {
+      ...fixture,
+      identifier: [{ system: "urn:stansgar:mrn", value: "483921" }],
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => stansgarOnly }))
+    );
+    const lines: string[] = [];
+    const sent = await runReminders((msg) => lines.push(msg));
+    expect(sent).toBe(0);
+    expect(lines[0]).toMatch(/^\[skip]/);
+    expect(lines[0]).toContain("missing_riverbend_mrn");
+  });
+
   it("fails closed when PIS is unavailable", async () => {
     await pool.query(`DELETE FROM reminder_log WHERE appointment_id = $1`, [apptId]);
     vi.stubGlobal(

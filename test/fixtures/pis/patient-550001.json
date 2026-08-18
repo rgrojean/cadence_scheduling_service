@@ -1,9 +1,14 @@
 {
-  "patientId": "550001",
-  "name": "Nguyen, Anh",
+  "identifier": [
+    {
+      "system": "urn:riverbend:mrn",
+      "value": "550001"
+    }
+  ],
+  "given": ["Anh"],
+  "family": "Nguyen",
   "dob": "12/01/1973",
   "gender": "F",
-  "ssn": "789-01-2345",
   "phone": "615-555-0133",
   "email": "anguyen@example.com",
   "address": {
