@@ -1,9 +1,9 @@
 {
-  "patientId": "100103",
-  "name": "King Jr, Robert",
+  "identifier": [{ "system": "urn:riverbend:mrn", "value": "100103" }],
+  "given": ["Robert"],
+  "family": "King Jr",
   "dob": "01/09/1982",
   "gender": "M",
-  "ssn": "456-78-9012",
   "phone": "615-555-0110",
   "email": "rkingjr@example.com",
   "address": {

@@ -1,9 +1,12 @@
 {
-  "patientId": "100104",
-  "name": "Williams, Sarah",
+  "identifier": [
+    { "system": "urn:stansgar:mrn", "value": "sam-100104" },
+    { "system": "urn:riverbend:mrn", "value": "100104" }
+  ],
+  "given": ["Sarah"],
+  "family": "Williams",
   "dob": "05/14/1990",
   "gender": "F",
-  "ssn": "567-89-0123",
   "phone": "615-555-0121",
   "email": "swilliams.rvb@example.com",
   "address": {

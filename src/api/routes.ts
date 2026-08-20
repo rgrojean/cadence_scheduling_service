@@ -1,6 +1,12 @@
 import type { FastifyInstance } from "fastify";
 import { bookSlot, cancelAppointment, pool, searchSlots } from "../db.js";
-import { getPatient, searchPatients } from "../identity.js";
+import {
+  IdentifierSystemMissingError,
+  bookablePatientId,
+  composeDisplayName,
+  getPatient,
+  searchPatients,
+} from "../identity.js";
 
 export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.get("/slots", async (req) => {
@@ -22,17 +28,25 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true };
   });
 
-  app.get("/appointments/:id/patient", async (req) => {
+  app.get("/appointments/:id/patient", async (req, reply) => {
     const { id } = req.params as { id: string };
     // Demographics fetched on read — never stored
     const appt = await pool.query(`SELECT patient_id FROM appointments WHERE id = $1`, [id]);
     if (appt.rowCount === 0) return { error: "not_found" };
-    const patient = await getPatient(appt.rows[0].patient_id);
-    return {
-      patientId: patient.patientId,
-      name: patient.name,
-      dob: patient.dob,
-    };
+    const storedId = appt.rows[0].patient_id as string;
+    try {
+      const patient = await getPatient(storedId);
+      return {
+        patientId: bookablePatientId(patient, storedId),
+        name: composeDisplayName(patient),
+        dob: patient.dob,
+      };
+    } catch (err) {
+      if (err instanceof IdentifierSystemMissingError) {
+        return reply.code(422).send({ error: "identifier_system_missing" });
+      }
+      throw err;
+    }
   });
 
   app.get("/patients", async (req) => {

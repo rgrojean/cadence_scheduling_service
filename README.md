@@ -20,40 +20,40 @@ Cadence replaced a scheduling module inside the legacy practice-management suite
 front-desk UI ─┐
 portal (book) ─┼──► Cadence API (Fastify) ──► Postgres (slots, appointments)
 reminder cron ─┘         │
-                         └──► PIS v2 (generated client, read-only)
+                         └──► PIS v3 (generated client, read-only)
 ```
 
 Three components in one repo:
 
 - **API layer** (`src/api/`) — REST endpoints for slot search, booking, cancellation. Booking uses a Postgres advisory lock per slot to prevent double-booking.
 - **Reminder worker** (`src/reminders/`) — a cron-driven job that runs every 15 minutes, finds appointments in the next 48 hours, fetches each patient's current phone number from PIS, and enqueues SMS messages to the outbound messaging gateway.
-- **PIS client** (`src/pis-client/`, generated) — a typed client generated from the PIS v2 OpenAPI document with `openapi-generator`, wrapped in `src/identity.ts`.
+- **PIS client** (`src/pis-client/`, generated) — a typed client generated from the PIS v3 OpenAPI document with `openapi-generator`, wrapped in `src/identity.ts`.
 
 ## How Cadence consumes the Patient Identity Service
 
 Cadence calls two PIS endpoints: `GET /v2/patients/{patientId}` (demographics for appointment display and reminders) and `GET /v2/patients?q=` (typeahead for front-desk patient lookup).
 
-Per team convention, every PIS response is validated at the boundary before it enters the application. The generated client types the full v2 payload, and a Zod schema (`src/pis-client/schema.ts`) mirrors the v2 spec exactly — all fields the spec marks required are required in the schema:
+Per team convention, every PIS response is validated at the boundary before it enters the application. The generated client types the full v3 payload, and a Zod schema (`src/pis-client/schema.ts`) mirrors the v3 spec exactly — all fields the spec marks required are required in the schema. The team's linter forbids `.passthrough()`/partial schemas on external boundaries — the position being that silent contract drift is worse than a loud failure.
 
 ```ts
-export const PatientV2 = z.object({
-  patientId: z.string(),
-  name: z.string(),          // "Garcia, Maria"
+export const Patient = z.object({
+  identifier: z.array(Identifier).min(1),
+  given: z.array(z.string()).min(1),
+  family: z.string(),
   dob: z.string(),           // "MM/DD/YYYY"
   gender: z.string(),
-  ssn: z.string(),           // present per v2 spec; not used by Cadence
   phone: z.string(),
   email: z.string().nullable(),
-  address: AddressV2,
-});
+  address: Address,
+}).strict();
 
-export async function getPatient(id: string): Promise<PatientV2> {
+export async function getPatient(id: string): Promise<Patient> {
   const res = await pisRaw.getPatient(id);
-  return PatientV2.parse(res);   // throws on any contract deviation
+  return Patient.parse(res);   // throws on any contract deviation
 }
 ```
 
-The application itself uses four fields: `name` (rendered on appointment cards and in reminder text as-is — the display string comes straight from PIS), `dob` (shown to front desk for verbal identity confirmation at check-in), `phone` (reminder delivery), and `patientId` (the foreign key everything is stored under). `ssn` is never read by application code; it is present in the schema because the schema mirrors the contract, and the team's linter forbids `.passthrough()`/partial schemas on external boundaries — the position being that silent contract drift is worse than a loud failure.
+The application itself uses four fields: a composed display name from `family` + `given[]` (rendered on appointment cards and in reminder text — `family + ", " + given.join(" ")`, or family only when given is empty), `dob` (shown to front desk for verbal identity confirmation at check-in), `phone` (reminder delivery), and `patientId` (the foreign key everything is stored under, taken from the Riverbend `identifier.system` value; lookups fail closed when that system is absent). HTTP paths `GET /v2/patients` and `GET /v2/patients/{patientId}` are unchanged so stored `appointments.patient_id` remains the path key.
 
 ## Data storage
 
@@ -61,7 +61,7 @@ Postgres holds `slots`, `appointments`, and `reminder_log`. No PIS data is persi
 
 ## Testing & CI
 
-The strongest suite in the fleet: unit tests for booking logic (including a concurrency test that hammers one slot from 20 workers), and integration tests for the reminder worker that run against recorded PIS v2 response fixtures (`test/fixtures/pis/*.json`, captured from staging in 2023). CI runs on every PR: lint, typecheck, tests, plus a contract check that re-validates the fixtures against the Zod schema. Merges to `main` require one review from the Access & Scheduling team per CODEOWNERS.
+The strongest suite in the fleet: unit tests for booking logic (including a concurrency test that hammers one slot from 20 workers), and integration tests for the reminder worker that run against recorded PIS v3 response fixtures (`test/fixtures/pis/*.json`). CI runs on every PR: lint, typecheck, tests, plus a contract check that re-validates the fixtures against the Zod schema. Merges to `main` require one review from the Access & Scheduling team per CODEOWNERS.
 
 ## Operational notes
 
@@ -72,11 +72,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
 {
   "data": [
     {
-      "patientId": "483921",
-      "name": "Garcia, Maria",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "483921" }],
+      "given": ["Maria"],
+      "family": "Garcia",
       "dob": "03/15/1961",
       "gender": "F",
-      "ssn": "123-45-6789",
       "phone": "615-555-0142",
       "email": "mgarcia@example.com",
       "address": {
@@ -87,11 +87,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100101",
-      "name": "Garcia Lopez, Maria del Carmen",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100101" }],
+      "given": ["Maria", "del Carmen"],
+      "family": "Garcia Lopez",
       "dob": "07/22/1978",
       "gender": "F",
-      "ssn": "234-56-7890",
       "phone": "615-555-0188",
       "email": "mdc.garcia@example.com",
       "address": {
@@ -102,11 +102,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100102",
-      "name": "Van Der Berg, Jan",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100102" }],
+      "given": ["Jan"],
+      "family": "Van Der Berg",
       "dob": "11/03/1955",
       "gender": "M",
-      "ssn": "345-67-8901",
       "phone": "615-555-0199",
       "email": null,
       "address": {
@@ -117,11 +117,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100103",
-      "name": "King Jr, Robert",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100103" }],
+      "given": ["Robert"],
+      "family": "King Jr",
       "dob": "01/09/1982",
       "gender": "M",
-      "ssn": "456-78-9012",
       "phone": "615-555-0110",
       "email": "rkingjr@example.com",
       "address": {
@@ -132,11 +132,14 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100104",
-      "name": "Williams, Sarah",
+      "identifier": [
+        { "system": "urn:stansgar:mrn", "value": "sam-100104" },
+        { "system": "urn:riverbend:mrn", "value": "100104" }
+      ],
+      "given": ["Sarah"],
+      "family": "Williams",
       "dob": "05/14/1990",
       "gender": "F",
-      "ssn": "567-89-0123",
       "phone": "615-555-0121",
       "email": "swilliams.rvb@example.com",
       "address": {
@@ -147,11 +150,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "550001",
-      "name": "Nguyen, Anh",
+      "identifier": [{ "system": "urn:stansgar:mrn", "value": "550001" }],
+      "given": ["Anh"],
+      "family": "Nguyen",
       "dob": "12/01/1973",
       "gender": "F",
-      "ssn": "789-01-2345",
       "phone": "615-555-0133",
       "email": "anguyen@example.com",
       "address": {
@@ -162,11 +165,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "550002",
-      "name": "Brooks, Helen",
+      "identifier": [{ "system": "urn:stansgar:mrn", "value": "550002" }],
+      "given": ["Helen"],
+      "family": "Brooks",
       "dob": "08/30/1949",
       "gender": "F",
-      "ssn": "901-23-4567",
       "phone": "615-555-0155",
       "email": null,
       "address": {
@@ -177,11 +180,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100105",
-      "name": "Thompson, Earl",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100105" }],
+      "given": ["Earl"],
+      "family": "Thompson",
       "dob": "06/06/1952",
       "gender": "M",
-      "ssn": "111-22-3333",
       "phone": "615-555-0201",
       "email": "ethompson@example.com",
       "address": {
@@ -192,11 +195,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100106",
-      "name": "Chen, Wei",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100106" }],
+      "given": ["Wei"],
+      "family": "Chen",
       "dob": "10/19/1985",
       "gender": "M",
-      "ssn": "222-33-4444",
       "phone": "615-555-0202",
       "email": "wchen@example.com",
       "address": {
@@ -207,11 +210,11 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
       }
     },
     {
-      "patientId": "100107",
-      "name": "Johnson, Patricia",
+      "identifier": [{ "system": "urn:riverbend:mrn", "value": "100107" }],
+      "given": ["Patricia"],
+      "family": "Johnson",
       "dob": "03/03/1964",
       "gender": "F",
-      "ssn": "333-44-5555",
       "phone": "615-555-0203",
       "email": "pjohnson@example.com",
       "address": {
@@ -223,8 +226,6 @@ The reminder worker is the component with a pager history: twice in 2024 it sent
     }
   ],
   "meta": {
-    "total": 28,
-    "page": 1,
-    "nextPage": 2
+    "total": 10
   }
 }
